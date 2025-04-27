@@ -4,7 +4,6 @@ const client = new pg.Client(
 );
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
-const express = require("express");
 const JWT_SECRET = process.env.JWT_SECRET || "1234";
 const jwt = require("jsonwebtoken");
 const { prisma } = require("./common");
@@ -22,8 +21,25 @@ const createUser = async (req, res, next) => {
   });
   res.status(201).send({ token });
 };
+const userLogIn = async (req, res, next) => {
+  const response = await prisma.user.findFirst({
+    where: {
+      username: req.body.username,
+    },
+  });
+  const match = await bcrypt.compare(req.body.password, response.password);
+  if (match) {
+    const token = jwt.sign({ id: response.id }, JWT_SECRET, {
+      expiresIn: "8h",
+    });
+    res.send({ token });
+  } else {
+    res.send("incorrect username or password");
+  }
+};
 
 module.exports = {
   client,
   createUser,
+  userLogIn,
 };
