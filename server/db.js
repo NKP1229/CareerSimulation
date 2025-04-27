@@ -48,9 +48,27 @@ const getUser = async (req, res, next) => {
   });
   res.send({ response });
 };
+
+const getAllItems = async (req, res, next) => {
+  const response = await prisma.item.findMany();
+  res.send({ response });
+};
+const getItem = async (req, res, next) => {
+  const response = await prisma.item.findFirst({
+    where: {
+      id: req.params.id,
+    },
+  });
+  res.send({ response });
+};
+const getItemReviews = async (req, res, next) => {};
+
 module.exports = {
   client,
   createUser,
   userLogIn,
   getUser,
+  getAllItems,
+  getItem,
+  getItemReviews,
 };
