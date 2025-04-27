@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET || "1234";
 app.use(express.json());
 
-const { client, createUser, userLogIn } = require("./db");
+const { client, createUser, userLogIn, getUser } = require("./db");
 
 app.listen(PORT, (req, res, next) => {
   console.log(`I am listening on port number ${PORT}`);
@@ -22,6 +22,14 @@ app.post("/api/auth/register", async (req, res, next) => {
 app.post("/api/auth/login", async (req, res, next) => {
   try {
     await userLogIn(req, res, next);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get("/api/auth/me", async (req, res, next) => {
+  try {
+    await getUser(req, res, next);
   } catch (error) {
     next(error);
   }

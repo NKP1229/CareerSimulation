@@ -37,9 +37,20 @@ const userLogIn = async (req, res, next) => {
     res.send("incorrect username or password");
   }
 };
-
+const getUser = async (req, res, next) => {
+  const auth = req.headers.authorization;
+  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+  req.user = jwt.verify(token, JWT_SECRET);
+  const response = await prisma.user.findFirst({
+    where: {
+      id: req.user?.id,
+    },
+  });
+  res.send({ response });
+};
 module.exports = {
   client,
   createUser,
   userLogIn,
+  getUser,
 };
