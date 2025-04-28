@@ -19,6 +19,7 @@ model User {
   username  String
   password  String 
   reviews   Review[]
+  comments  Comment[]
 }
 
 model Item {
@@ -28,18 +29,20 @@ model Item {
 }
 
 model Review {
-  id      String    @id @default(uuid())
-  rating  Int       
-  userId  String
-  user    User      @relation(fields: [userId], references: [id])
-  itemId  String
-  item    Item      @relation(fields: [itemId], references: [id])
+  id        String    @id @default(uuid())
+  rating    Int       
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  itemId    String
+  item      Item      @relation(fields: [itemId], references: [id])
   comments  Comment[]
 }
 
 model Comment {
   id        String      @id @default(uuid())
   text      String      @db.VarChar(255)
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
   reviewId  String
   review    Review      @relation(fields: [reviewId], references: [id])
 }
