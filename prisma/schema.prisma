@@ -44,5 +44,5 @@ model Comment {
   userId    String
   user      User        @relation(fields: [userId], references: [id])
   reviewId  String
-  review    Review      @relation(fields: [reviewId], references: [id])
+  review    Review      @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 }

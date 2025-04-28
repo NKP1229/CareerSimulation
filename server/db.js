@@ -1,8 +1,3 @@
-const pg = require("pg");
-const client = new pg.Client(
-  process.env.DATABASE_URL || "postgres://localhost/block37"
-);
-const uuid = require("uuid");
 const bcrypt = require("bcrypt");
 const JWT_SECRET = process.env.JWT_SECRET || "1234";
 const jwt = require("jsonwebtoken");
@@ -166,6 +161,42 @@ const UpdateAComment = async (req, res, next) => {
   }
 };
 
+const deleteReview = async (req, res, next) => {
+  const auth = req.headers.authorization;
+  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+  req.user = jwt.verify(token, JWT_SECRET);
+  if (req.user?.id !== req.params.userId) {
+    res.send("Please log in.");
+  } else {
+    await prisma.comment.deleteMany({
+      where: {
+        reviewId: req.params.reviewId,
+      },
+    });
+    const response = await prisma.review.delete({
+      where: {
+        id: req.params.reviewId,
+      },
+    });
+    res.status(201).send({ response });
+  }
+};
+const deleteComment = async (req, res, next) => {
+  const auth = req.headers.authorization;
+  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+  req.user = jwt.verify(token, JWT_SECRET);
+  if (req.user?.id !== req.params.userId) {
+    res.send("Please log in.");
+  } else {
+    const response = await prisma.comment.delete({
+      where: {
+        id: req.params.commentId,
+      },
+    });
+    res.status(201).send({ response });
+  }
+};
+
 module.exports = {
   createUser,
   userLogIn,
@@ -180,4 +211,6 @@ module.exports = {
   writeAComment,
   getMyComments,
   UpdateAComment,
+  deleteReview,
+  deleteComment,
 };

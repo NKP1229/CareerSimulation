@@ -19,6 +19,8 @@ const {
   writeAComment,
   getMyComments,
   UpdateAComment,
+  deleteReview,
+  deleteComment,
 } = require("./db");
 
 app.listen(PORT, (req, res, next) => {
@@ -118,6 +120,21 @@ app.get("/api/comments/me", async (req, res, next) => {
 app.put("/api/users/:userId/comments/:commentId", async (req, res, next) => {
   try {
     await UpdateAComment(req, res, next);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.delete("/api/users/:userId/comments/:commentId", async (req, res, next) => {
+  try {
+    await deleteComment(req, res, next);
+  } catch (error) {
+    next(error);
+  }
+});
+app.delete("/api/users/:userId/reviews/:reviewId", async (req, res, next) => {
+  try {
+    await deleteReview(req, res, next);
   } catch (error) {
     next(error);
   }
