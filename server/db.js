@@ -62,14 +62,11 @@ const getItem = async (req, res, next) => {
   res.send({ response });
 };
 const getItemReviews = async (req, res, next) => {
-  //   console.log(req.params.itemId);
   const response = await prisma.review.findMany({
     where: {
       itemId: req.params.itemId,
     },
   });
-  //   console.log(response);
-  //   const reviews = response.rows;
   res.send({ response });
 };
 
@@ -107,8 +104,24 @@ const getMyReviews = async (req, res, next) => {
   });
   res.status(201).send({ response });
 };
-const updateAReview = async (req, res, next) => {};
-
+const updateAReview = async (req, res, next) => {
+  const auth = req.headers.authorization;
+  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+  req.user = jwt.verify(token, JWT_SECRET);
+  if (req.user?.id !== req.params.userId) {
+    res.send("Please log in.");
+  } else {
+    const response = await prisma.review.update({
+      where: {
+        id: req.params.reviewId,
+      },
+      data: {
+        rating: req.body.rating,
+      },
+    });
+    res.status(201).send({ response });
+  }
+};
 module.exports = {
   createUser,
   userLogIn,
