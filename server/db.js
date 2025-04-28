@@ -147,7 +147,24 @@ const getMyComments = async (req, res, next) => {
   });
   res.status(201).send({ response });
 };
-const UpdateAComment = async (req, res, next) => {};
+const UpdateAComment = async (req, res, next) => {
+  const auth = req.headers.authorization;
+  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+  req.user = jwt.verify(token, JWT_SECRET);
+  if (req.user?.id !== req.params.userId) {
+    res.send("Please log in.");
+  } else {
+    const response = await prisma.comment.update({
+      where: {
+        id: req.params.commentId,
+      },
+      data: {
+        text: req.body.text,
+      },
+    });
+    res.status(201).send({ response });
+  }
+};
 
 module.exports = {
   createUser,
