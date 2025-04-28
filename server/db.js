@@ -56,19 +56,63 @@ const getAllItems = async (req, res, next) => {
 const getItem = async (req, res, next) => {
   const response = await prisma.item.findFirst({
     where: {
-      id: req.params.id,
+      id: req.params.itemId,
     },
   });
   res.send({ response });
 };
-const getItemReviews = async (req, res, next) => {};
+const getItemReviews = async (req, res, next) => {
+  //   console.log(req.params.itemId);
+  const response = await prisma.review.findMany({
+    where: {
+      itemId: req.params.itemId,
+    },
+  });
+  //   console.log(response);
+  //   const reviews = response.rows;
+  res.send({ response });
+};
+
+const getAReview = async (req, res, next) => {
+  const response = await prisma.review.findFirst({
+    where: {
+      id: req.params.reviewId,
+      itemId: req.params.itemId,
+    },
+  });
+  res.send({ response });
+};
+const writeAReview = async (req, res, next) => {
+  const auth = req.headers.authorization;
+  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+  req.user = jwt.verify(token, JWT_SECRET);
+
+  const response = await prisma.review.create({
+    data: {
+      userId: req.user?.id,
+      itemId: req.params.itemId,
+      rating: req.body.rating,
+    },
+  });
+  res.status(201).send({ response });
+};
+const getMyReviews = async (req, res, next) => {
+  const auth = req.headers.authorization;
+  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+  req.user = jwt.verify(token, JWT_SECRET);
+  const response = await prisma.review.findMany({});
+};
+const updateAReview = async (req, res, next) => {};
 
 module.exports = {
-  client,
   createUser,
   userLogIn,
   getUser,
   getAllItems,
   getItem,
   getItemReviews,
+  getAReview,
+  writeAReview,
+  getMyReviews,
+  updateAReview,
 };
