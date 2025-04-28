@@ -100,7 +100,12 @@ const getMyReviews = async (req, res, next) => {
   const auth = req.headers.authorization;
   const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
   req.user = jwt.verify(token, JWT_SECRET);
-  const response = await prisma.review.findMany({});
+  const response = await prisma.review.findMany({
+    where: {
+      userId: req.user?.id,
+    },
+  });
+  res.status(201).send({ response });
 };
 const updateAReview = async (req, res, next) => {};
 
