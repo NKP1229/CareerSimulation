@@ -122,6 +122,23 @@ const updateAReview = async (req, res, next) => {
     res.status(201).send({ response });
   }
 };
+
+const writeAComment = async (req, res, next) => {
+  const auth = req.headers.authorization;
+  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+  req.user = jwt.verify(token, JWT_SECRET);
+  const response = await prisma.comment.create({
+    data: {
+      reviewId: req.params.reviewId,
+      text: req.body.text,
+      userId: req.user?.id,
+    },
+  });
+  res.status(201).send({ response });
+};
+const getMyComments = async (req, res, next) => {};
+const UpdateAComment = async (req, res, next) => {};
+
 module.exports = {
   createUser,
   userLogIn,
@@ -133,4 +150,7 @@ module.exports = {
   writeAReview,
   getMyReviews,
   updateAReview,
+  writeAComment,
+  getMyComments,
+  UpdateAComment,
 };

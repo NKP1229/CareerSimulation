@@ -15,10 +15,11 @@ datasource db {
 }
 
 model User {
-  id       String   @id @default(uuid())
+  id       String    @id @default(uuid())
   username String
   password String
   reviews  Review[]
+  comments Comment[]
 }
 
 model Item {
@@ -40,6 +41,8 @@ model Review {
 model Comment {
   id       String @id @default(uuid())
   text     String @db.VarChar(255)
+  userId   String
+  user     User   @relation(fields: [userId], references: [id])
   reviewId String
   review   Review @relation(fields: [reviewId], references: [id])
 }

@@ -16,6 +16,9 @@ const {
   writeAReview,
   getMyReviews,
   updateAReview,
+  writeAComment,
+  getMyComments,
+  UpdateAComment,
 } = require("./db");
 
 app.listen(PORT, (req, res, next) => {
@@ -90,6 +93,31 @@ app.get("/api/reviews/me", async (req, res, next) => {
 app.put("/api/users/:userId/reviews/:reviewId", async (req, res, next) => {
   try {
     await updateAReview(req, res, next);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post(
+  "/api/items/:itemId/reviews/:reviewId/comments",
+  async (req, res, next) => {
+    try {
+      await writeAComment(req, res, next);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+app.get("/api/comments/me", async (req, res, next) => {
+  try {
+    await getMyComments(req, res, next);
+  } catch (error) {
+    next(error);
+  }
+});
+app.put("/api/users/:userId/comments/:commentId", async (req, res, next) => {
+  try {
+    await UpdateAComment(req, res, next);
   } catch (error) {
     next(error);
   }
