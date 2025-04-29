@@ -3368,6 +3368,7 @@ export namespace Prisma {
 
   export type ReviewMinAggregateOutputType = {
     id: string | null
+    text: string | null
     rating: number | null
     userId: string | null
     itemId: string | null
@@ -3375,6 +3376,7 @@ export namespace Prisma {
 
   export type ReviewMaxAggregateOutputType = {
     id: string | null
+    text: string | null
     rating: number | null
     userId: string | null
     itemId: string | null
@@ -3382,6 +3384,7 @@ export namespace Prisma {
 
   export type ReviewCountAggregateOutputType = {
     id: number
+    text: number
     rating: number
     userId: number
     itemId: number
@@ -3399,6 +3402,7 @@ export namespace Prisma {
 
   export type ReviewMinAggregateInputType = {
     id?: true
+    text?: true
     rating?: true
     userId?: true
     itemId?: true
@@ -3406,6 +3410,7 @@ export namespace Prisma {
 
   export type ReviewMaxAggregateInputType = {
     id?: true
+    text?: true
     rating?: true
     userId?: true
     itemId?: true
@@ -3413,6 +3418,7 @@ export namespace Prisma {
 
   export type ReviewCountAggregateInputType = {
     id?: true
+    text?: true
     rating?: true
     userId?: true
     itemId?: true
@@ -3507,6 +3513,7 @@ export namespace Prisma {
 
   export type ReviewGroupByOutputType = {
     id: string
+    text: string
     rating: number
     userId: string
     itemId: string
@@ -3533,6 +3540,7 @@ export namespace Prisma {
 
   export type ReviewSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    text?: boolean
     rating?: boolean
     userId?: boolean
     itemId?: boolean
@@ -3544,6 +3552,7 @@ export namespace Prisma {
 
   export type ReviewSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    text?: boolean
     rating?: boolean
     userId?: boolean
     itemId?: boolean
@@ -3553,6 +3562,7 @@ export namespace Prisma {
 
   export type ReviewSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    text?: boolean
     rating?: boolean
     userId?: boolean
     itemId?: boolean
@@ -3562,12 +3572,13 @@ export namespace Prisma {
 
   export type ReviewSelectScalar = {
     id?: boolean
+    text?: boolean
     rating?: boolean
     userId?: boolean
     itemId?: boolean
   }
 
-  export type ReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "rating" | "userId" | "itemId", ExtArgs["result"]["review"]>
+  export type ReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "text" | "rating" | "userId" | "itemId", ExtArgs["result"]["review"]>
   export type ReviewInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     item?: boolean | ItemDefaultArgs<ExtArgs>
@@ -3592,6 +3603,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      text: string
       rating: number
       userId: string
       itemId: string
@@ -4022,6 +4034,7 @@ export namespace Prisma {
    */
   interface ReviewFieldRefs {
     readonly id: FieldRef<"Review", 'String'>
+    readonly text: FieldRef<"Review", 'String'>
     readonly rating: FieldRef<"Review", 'Int'>
     readonly userId: FieldRef<"Review", 'String'>
     readonly itemId: FieldRef<"Review", 'String'>
@@ -5549,6 +5562,7 @@ export namespace Prisma {
 
   export const ReviewScalarFieldEnum: {
     id: 'id',
+    text: 'text',
     rating: 'rating',
     userId: 'userId',
     itemId: 'itemId'
@@ -5726,6 +5740,7 @@ export namespace Prisma {
     OR?: ReviewWhereInput[]
     NOT?: ReviewWhereInput | ReviewWhereInput[]
     id?: StringFilter<"Review"> | string
+    text?: StringFilter<"Review"> | string
     rating?: IntFilter<"Review"> | number
     userId?: StringFilter<"Review"> | string
     itemId?: StringFilter<"Review"> | string
@@ -5736,6 +5751,7 @@ export namespace Prisma {
 
   export type ReviewOrderByWithRelationInput = {
     id?: SortOrder
+    text?: SortOrder
     rating?: SortOrder
     userId?: SortOrder
     itemId?: SortOrder
@@ -5749,6 +5765,7 @@ export namespace Prisma {
     AND?: ReviewWhereInput | ReviewWhereInput[]
     OR?: ReviewWhereInput[]
     NOT?: ReviewWhereInput | ReviewWhereInput[]
+    text?: StringFilter<"Review"> | string
     rating?: IntFilter<"Review"> | number
     userId?: StringFilter<"Review"> | string
     itemId?: StringFilter<"Review"> | string
@@ -5759,6 +5776,7 @@ export namespace Prisma {
 
   export type ReviewOrderByWithAggregationInput = {
     id?: SortOrder
+    text?: SortOrder
     rating?: SortOrder
     userId?: SortOrder
     itemId?: SortOrder
@@ -5774,6 +5792,7 @@ export namespace Prisma {
     OR?: ReviewScalarWhereWithAggregatesInput[]
     NOT?: ReviewScalarWhereWithAggregatesInput | ReviewScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Review"> | string
+    text?: StringWithAggregatesFilter<"Review"> | string
     rating?: IntWithAggregatesFilter<"Review"> | number
     userId?: StringWithAggregatesFilter<"Review"> | string
     itemId?: StringWithAggregatesFilter<"Review"> | string
@@ -5923,6 +5942,7 @@ export namespace Prisma {
 
   export type ReviewCreateInput = {
     id?: string
+    text: string
     rating: number
     user: UserCreateNestedOneWithoutReviewsInput
     item: ItemCreateNestedOneWithoutReviewsInput
@@ -5931,6 +5951,7 @@ export namespace Prisma {
 
   export type ReviewUncheckedCreateInput = {
     id?: string
+    text: string
     rating: number
     userId: string
     itemId: string
@@ -5939,6 +5960,7 @@ export namespace Prisma {
 
   export type ReviewUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneRequiredWithoutReviewsNestedInput
     item?: ItemUpdateOneRequiredWithoutReviewsNestedInput
@@ -5947,6 +5969,7 @@ export namespace Prisma {
 
   export type ReviewUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
     itemId?: StringFieldUpdateOperationsInput | string
@@ -5955,6 +5978,7 @@ export namespace Prisma {
 
   export type ReviewCreateManyInput = {
     id?: string
+    text: string
     rating: number
     userId: string
     itemId: string
@@ -5962,11 +5986,13 @@ export namespace Prisma {
 
   export type ReviewUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
   }
 
   export type ReviewUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
     itemId?: StringFieldUpdateOperationsInput | string
@@ -6128,6 +6154,7 @@ export namespace Prisma {
 
   export type ReviewCountOrderByAggregateInput = {
     id?: SortOrder
+    text?: SortOrder
     rating?: SortOrder
     userId?: SortOrder
     itemId?: SortOrder
@@ -6139,6 +6166,7 @@ export namespace Prisma {
 
   export type ReviewMaxOrderByAggregateInput = {
     id?: SortOrder
+    text?: SortOrder
     rating?: SortOrder
     userId?: SortOrder
     itemId?: SortOrder
@@ -6146,6 +6174,7 @@ export namespace Prisma {
 
   export type ReviewMinOrderByAggregateInput = {
     id?: SortOrder
+    text?: SortOrder
     rating?: SortOrder
     userId?: SortOrder
     itemId?: SortOrder
@@ -6504,6 +6533,7 @@ export namespace Prisma {
 
   export type ReviewCreateWithoutUserInput = {
     id?: string
+    text: string
     rating: number
     item: ItemCreateNestedOneWithoutReviewsInput
     comments?: CommentCreateNestedManyWithoutReviewInput
@@ -6511,6 +6541,7 @@ export namespace Prisma {
 
   export type ReviewUncheckedCreateWithoutUserInput = {
     id?: string
+    text: string
     rating: number
     itemId: string
     comments?: CommentUncheckedCreateNestedManyWithoutReviewInput
@@ -6569,6 +6600,7 @@ export namespace Prisma {
     OR?: ReviewScalarWhereInput[]
     NOT?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
     id?: StringFilter<"Review"> | string
+    text?: StringFilter<"Review"> | string
     rating?: IntFilter<"Review"> | number
     userId?: StringFilter<"Review"> | string
     itemId?: StringFilter<"Review"> | string
@@ -6602,6 +6634,7 @@ export namespace Prisma {
 
   export type ReviewCreateWithoutItemInput = {
     id?: string
+    text: string
     rating: number
     user: UserCreateNestedOneWithoutReviewsInput
     comments?: CommentCreateNestedManyWithoutReviewInput
@@ -6609,6 +6642,7 @@ export namespace Prisma {
 
   export type ReviewUncheckedCreateWithoutItemInput = {
     id?: string
+    text: string
     rating: number
     userId: string
     comments?: CommentUncheckedCreateNestedManyWithoutReviewInput
@@ -6779,6 +6813,7 @@ export namespace Prisma {
 
   export type ReviewCreateWithoutCommentsInput = {
     id?: string
+    text: string
     rating: number
     user: UserCreateNestedOneWithoutReviewsInput
     item: ItemCreateNestedOneWithoutReviewsInput
@@ -6786,6 +6821,7 @@ export namespace Prisma {
 
   export type ReviewUncheckedCreateWithoutCommentsInput = {
     id?: string
+    text: string
     rating: number
     userId: string
     itemId: string
@@ -6834,6 +6870,7 @@ export namespace Prisma {
 
   export type ReviewUpdateWithoutCommentsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneRequiredWithoutReviewsNestedInput
     item?: ItemUpdateOneRequiredWithoutReviewsNestedInput
@@ -6841,6 +6878,7 @@ export namespace Prisma {
 
   export type ReviewUncheckedUpdateWithoutCommentsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
     itemId?: StringFieldUpdateOperationsInput | string
@@ -6848,6 +6886,7 @@ export namespace Prisma {
 
   export type ReviewCreateManyUserInput = {
     id?: string
+    text: string
     rating: number
     itemId: string
   }
@@ -6860,6 +6899,7 @@ export namespace Prisma {
 
   export type ReviewUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     item?: ItemUpdateOneRequiredWithoutReviewsNestedInput
     comments?: CommentUpdateManyWithoutReviewNestedInput
@@ -6867,6 +6907,7 @@ export namespace Prisma {
 
   export type ReviewUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     itemId?: StringFieldUpdateOperationsInput | string
     comments?: CommentUncheckedUpdateManyWithoutReviewNestedInput
@@ -6874,6 +6915,7 @@ export namespace Prisma {
 
   export type ReviewUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     itemId?: StringFieldUpdateOperationsInput | string
   }
@@ -6898,12 +6940,14 @@ export namespace Prisma {
 
   export type ReviewCreateManyItemInput = {
     id?: string
+    text: string
     rating: number
     userId: string
   }
 
   export type ReviewUpdateWithoutItemInput = {
     id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneRequiredWithoutReviewsNestedInput
     comments?: CommentUpdateManyWithoutReviewNestedInput
@@ -6911,6 +6955,7 @@ export namespace Prisma {
 
   export type ReviewUncheckedUpdateWithoutItemInput = {
     id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
     comments?: CommentUncheckedUpdateManyWithoutReviewNestedInput
@@ -6918,6 +6963,7 @@ export namespace Prisma {
 
   export type ReviewUncheckedUpdateManyWithoutItemInput = {
     id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
     rating?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
   }

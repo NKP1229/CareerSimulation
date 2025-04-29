@@ -44,3 +44,12 @@ h5 {
   color: black;
   padding: 0px 20px;
 }
+.formDiv {
+  padding: 10px;
+  input {
+    padding: 8px;
+  }
+  label {
+    color: black;
+  }
+}

@@ -187,7 +187,7 @@ function App() {
         {isRegister && (
           <form onSubmit={signup}>
             <h1>Register:</h1>
-            <div>
+            <div className="formDiv">
               <label>Username:</label>
               <input
                 value={username}
@@ -195,7 +195,7 @@ function App() {
                 onChange={(ev) => setUsername(ev.target.value)}
               />
             </div>
-            <div>
+            <div className="formDiv">
               <label>Password:</label>
               <input
                 value={password}
@@ -203,33 +203,37 @@ function App() {
                 onChange={(ev) => setPassword(ev.target.value)}
               />
             </div>
-            <button disabled={!username || !password} type="submit">
-              Register
-            </button>
+            <div className="formDiv">
+              <button disabled={!username || !password} type="submit">
+                Register
+              </button>
+            </div>
           </form>
         )}
         {isLogIn && (
           <form onSubmit={login}>
             <h1>LogIn:</h1>
-            <div>
-              <label>Username:</label>
+            <div className="formDiv">
+              <label>Username: </label>
               <input
                 value={username}
                 placeholder="username"
                 onChange={(ev) => setUsername(ev.target.value)}
               />
             </div>
-            <div>
-              <label>Password:</label>
+            <div className="formDiv">
+              <label>Password: </label>
               <input
                 value={password}
                 placeholder="password"
                 onChange={(ev) => setPassword(ev.target.value)}
               />
             </div>
-            <button disabled={!username || !password} type="submit">
-              LogIn
-            </button>
+            <div className="formDiv">
+              <button disabled={!username || !password} type="submit">
+                LogIn
+              </button>
+            </div>
           </form>
         )}
         {selectedItem && (
@@ -238,6 +242,7 @@ function App() {
             <section>
               <h3>{selectedItem.id}</h3>
               <h3>{selectedItem.name}</h3>
+              <h3></h3>
             </section>
           </>
         )}

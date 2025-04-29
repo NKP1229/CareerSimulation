@@ -62,7 +62,9 @@ const getItemReviews = async (req, res, next) => {
       itemId: req.params.itemId,
     },
   });
-  res.send({ response });
+  const avg =
+    response.reduce((sum, review) => sum + review.rating, 0) / response.length;
+  res.send({ response, avg });
 };
 
 const getAReview = async (req, res, next) => {
@@ -84,6 +86,7 @@ const writeAReview = async (req, res, next) => {
       userId: req.user?.id,
       itemId: req.params.itemId,
       rating: req.body.rating,
+      text: req.body.text,
     },
   });
   res.status(201).send({ response });
