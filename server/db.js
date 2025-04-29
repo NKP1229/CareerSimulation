@@ -81,6 +81,17 @@ const writeAReview = async (req, res, next) => {
   const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
   req.user = jwt.verify(token, JWT_SECRET);
 
+  const existingReview = await prisma.review.findFirst({
+    where: {
+      userId: req.user?.id,
+      itemId: req.params.itemId,
+    },
+  });
+  if (existingReview) {
+    return res
+      .status(400)
+      .send({ message: "You have already reviewed this item." });
+  }
   const response = await prisma.review.create({
     data: {
       userId: req.user?.id,
@@ -115,6 +126,7 @@ const updateAReview = async (req, res, next) => {
       },
       data: {
         rating: req.body.rating,
+        text: req.body.text,
       },
     });
     res.status(201).send({ response });

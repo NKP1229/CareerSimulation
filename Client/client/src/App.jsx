@@ -141,7 +141,7 @@ function App() {
       });
       const array = await Response.json();
       if (Response.ok) {
-        setItems(array);
+        setReviews(array.response);
       } else {
         console.log(array);
       }
@@ -149,6 +149,30 @@ function App() {
       console.log(json);
     }
   };
+  async function updateReview(reviewId) {
+    // const token = window.localStorage.getItem("token");
+    // const response = await fetch(
+    //   `/api/users/${account.id}/reviews/${reviewId}`,
+    //   {
+    //     method: "PUT",
+    //     body: JSON.stringify({ rating, text }),
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   }
+    // );
+  }
+  async function deleteReview(reviewId) {
+    const token = window.localStorage.getItem("token");
+    const response = await fetch("/api/auth/me", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
 
   if (loading) {
     return <div>Loading...</div>;
@@ -186,20 +210,52 @@ function App() {
               </div>
               <h2>Reviews</h2>
               <ul>
-                {reviews.map((review) => (
-                  <li key={review.id} className="Data">
-                    <button className="inline">edit</button>
-                    <section className="inline">
-                      <h5 className="inline">item: {review.itemId}</h5>
-                      <h5 className="inline">rating: {review.rating}</h5>
-                    </section>
-                    <button>delete</button>
-                  </li>
-                ))}
+                {Array.isArray(reviews) && reviews.length > 0 ? (
+                  reviews.map((review) => (
+                    <li key={review.id} className="Data">
+                      <button
+                        className="inline"
+                        onClick={() => updateReview(review.id)}
+                      >
+                        edit
+                      </button>
+                      <section className="inline">
+                        <h5 className="inline">item: {review.itemId}</h5>
+                        <h5 className="inline">rating: {review.rating}</h5>
+                      </section>
+                      <button onClick={() => deleteReview(review.id)}>
+                        delete
+                      </button>
+                    </li>
+                  ))
+                ) : (
+                  <button onClick={() => Account()}>refresh</button>
+                )}
               </ul>
             </>
           )}
-          {!isAccount && <h1>Home</h1>}
+          {!isAccount && (
+            <>
+              <h1>Sandwich menu:</h1>
+              <section>
+                <ul>
+                  {Array.isArray(items) && items.length > 0 ? (
+                    items.map((item) => (
+                      <li key={item.id}>
+                        <button onClick={() => setSelect(item)}>
+                          {item.name}
+                        </button>
+                      </li>
+                    ))
+                  ) : (
+                    <button onClick={() => setRefresh(!refresh)}>
+                      refresh
+                    </button>
+                  )}
+                </ul>
+              </section>
+            </>
+          )}
         </main>
       </>
     );
