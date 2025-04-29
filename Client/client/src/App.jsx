@@ -4,7 +4,10 @@ import "./App.css";
 function App() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isRegister, setIsRegister] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLogIn, setIsLogIn] = useState(false);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -24,36 +27,134 @@ function App() {
     fetchItems();
   }, []);
 
+  async function home() {
+    setIsLogIn(false);
+    setIsRegister(false);
+  }
+  async function register() {
+    setIsRegister(true);
+    setIsLogIn(false);
+  }
+  async function logIn() {
+    setIsLogIn(true);
+    setIsRegister(false);
+  }
+  const signup = async (event) => {
+    event.preventDefault();
+    const response = await fetch("/api/auth/register", {
+      method: "POST",
+      body: JSON.stringify({ username, password }), // Properly stringify the data
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const json = await response.json();
+    if (response.ok) {
+      window.localStorage.setItem("token", json.token);
+      setIsRegister(false);
+    } else {
+      console.log(json);
+    }
+  };
+  const login = async (event) => {
+    event.preventDefault();
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ username, password }), // Properly stringify the data
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const json = await response.json();
+    if (response.ok) {
+      window.localStorage.setItem("token", json.token);
+      setIsLogIn(false);
+    } else {
+      console.log(json);
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
-
   return (
     <>
       <nav>
         <ul>
           <li>
-            <button>Home</button>
+            <button onClick={() => home()}>Home</button>
           </li>
           <li>
-            <button>SignUp</button>
+            <button onClick={() => register()}>SignUp</button>
           </li>
           <li>
-            <button>LogIn</button>
+            <button onClick={() => logIn()}>LogIn</button>
           </li>
         </ul>
       </nav>
       <main>
-        <h1>Sandwich menu:</h1>
-        <section>
-          <ul>
-            {items.map((item) => (
-              <li key={item.id}>
-                <button>{item.name}</button>
-              </li>
-            ))}
-          </ul>
-        </section>
+        {isRegister && (
+          <form onSubmit={signup}>
+            <h1>Register:</h1>
+            <div>
+              <label>Username:</label>
+              <input
+                value={username}
+                placeholder="username"
+                onChange={(ev) => setUsername(ev.target.value)}
+              />
+            </div>
+            <div>
+              <label>Password:</label>
+              <input
+                value={password}
+                placeholder="password"
+                onChange={(ev) => setPassword(ev.target.value)}
+              />
+            </div>
+            <button disabled={!username || !password} type="submit">
+              Register
+            </button>
+          </form>
+        )}
+        {isLogIn && (
+          <form onSubmit={login}>
+            <h1>LogIn:</h1>
+            <div>
+              <label>Username:</label>
+              <input
+                value={username}
+                placeholder="username"
+                onChange={(ev) => setUsername(ev.target.value)}
+              />
+            </div>
+            <div>
+              <label>Password:</label>
+              <input
+                value={password}
+                placeholder="password"
+                onChange={(ev) => setPassword(ev.target.value)}
+              />
+            </div>
+            <button disabled={!username || !password} type="submit">
+              LogIn
+            </button>
+          </form>
+        )}
+        {!isRegister && !isLogIn && (
+          <>
+            <h1>Sandwich menu:</h1>
+            <section>
+              <ul>
+                {items.map((item) => (
+                  <li key={item.id}>
+                    <button>{item.name}</button>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </>
+        )}
       </main>
     </>
   );
