@@ -6,12 +6,17 @@
 }
 body {
   height: 100vh;
+  background-image: url(https://images.pexels.com/photos/683039/pexels-photo-683039.jpeg?cs=srgb&dl=pexels-apgpotr-683039.jpg&fm=jpg);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 main {
   height: 60%;
   width: 100%;
   margin: 0 auto;
-  padding: 15px;
+  padding: 15px 0px;
+  background-color: rgba(255, 233, 201, 0.7);
   border: 1px solid grey;
   border-radius: 8%;
 }
@@ -21,4 +26,21 @@ nav ul li {
 }
 ul li {
   margin: 10px;
+  padding: 0px 20px;
+  button {
+    background-color: rgba(78, 78, 78, 0.5);
+  }
+}
+h1 {
+  text-shadow: 1px 1px 1px black;
+  background-color: rgba(59, 59, 59, 0.32);
+  padding: 8px 15px;
+}
+h2 {
+  text-shadow: 1px 1px 1px black;
+}
+h3,
+h5 {
+  color: black;
+  padding: 0px 20px;
 }

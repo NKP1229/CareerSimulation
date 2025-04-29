@@ -13,8 +13,10 @@ function App() {
   const [isLogIn, setIsLogIn] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isAccount, setIsAccount] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const fetchItems = async () => {
       try {
         const response = await fetch("/api/items");
@@ -30,7 +32,7 @@ function App() {
       }
     };
     fetchItems();
-  }, []);
+  }, [refresh]);
 
   function home() {
     setIsLogIn(false);
@@ -41,10 +43,12 @@ function App() {
   function register() {
     setIsRegister(true);
     setIsLogIn(false);
+    setSelectedItem(null);
   }
   function logIn() {
     setIsLogIn(true);
     setIsRegister(false);
+    setSelectedItem(null);
   }
   const signup = async (event) => {
     event.preventDefault();
@@ -242,13 +246,17 @@ function App() {
             <h1>Sandwich menu:</h1>
             <section>
               <ul>
-                {items.map((item) => (
-                  <li key={item.id}>
-                    <button onClick={() => setSelectedItem(item)}>
-                      {item.name}
-                    </button>
-                  </li>
-                ))}
+                {Array.isArray(items) && items.length > 0 ? (
+                  items.map((item) => (
+                    <li key={item.id}>
+                      <button onClick={() => setSelectedItem(item)}>
+                        {item.name}
+                      </button>
+                    </li>
+                  ))
+                ) : (
+                  <button onClick={() => setRefresh(!refresh)}>refresh</button>
+                )}
               </ul>
             </section>
           </>
