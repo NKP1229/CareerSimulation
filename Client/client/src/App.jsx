@@ -4,6 +4,8 @@ import "./App.css";
 function App() {
   const [items, setItems] = useState([]);
   const [account, setAccount] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isRegister, setIsRegister] = useState(false);
   const [username, setUsername] = useState("");
@@ -34,6 +36,7 @@ function App() {
     setIsLogIn(false);
     setIsRegister(false);
     setIsAccount(false);
+    setSelectedItem(null);
   }
   function register() {
     setIsRegister(true);
@@ -97,6 +100,19 @@ function App() {
     const json = await response.json();
     if (response.ok) {
       setAccount(json.response);
+      const Response = await fetch("/api/reviews/me", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const array = await Response.json();
+      if (Response.ok) {
+        setItems(array);
+      } else {
+        console.log(array);
+      }
     } else {
       console.log(json);
     }
@@ -124,10 +140,23 @@ function App() {
         <main>
           {isAccount && (
             <>
-              <h1>Account Details</h1>
-              <h3>{account.id}</h3>
-              <h3>{account.username}</h3>
-              <h3>{account.password}</h3>
+              <h2>Account Details</h2>
+              <div>
+                <h5>id: {account.id}</h5>
+                <h5>username: {account.username}</h5>
+                <h5>password: {account.password}</h5>
+              </div>
+              <h2>Reviews</h2>
+              <ul>
+                {reviews.map((review) => (
+                  <li key={review.id}>
+                    <button>
+                      <h5>item: {review.itemId}</h5>
+                      <h5>rating: {review.rating}</h5>
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </>
           )}
           {!isAccount && <h1>Home</h1>}
@@ -199,14 +228,25 @@ function App() {
             </button>
           </form>
         )}
-        {!isRegister && !isLogIn && (
+        {selectedItem && (
+          <>
+            <h2>Selected Item:</h2>
+            <section>
+              <h3>{selectedItem.id}</h3>
+              <h3>{selectedItem.name}</h3>
+            </section>
+          </>
+        )}
+        {!isRegister && !isLogIn && !selectedItem && (
           <>
             <h1>Sandwich menu:</h1>
             <section>
               <ul>
                 {items.map((item) => (
                   <li key={item.id}>
-                    <button>{item.name}</button>
+                    <button onClick={() => setSelectedItem(item)}>
+                      {item.name}
+                    </button>
                   </li>
                 ))}
               </ul>
