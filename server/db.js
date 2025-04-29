@@ -34,8 +34,12 @@ const userLogIn = async (req, res, next) => {
 };
 const getUser = async (req, res, next) => {
   const auth = req.headers.authorization;
-  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
-  req.user = jwt.verify(token, JWT_SECRET);
+  try {
+    const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+    req.user = jwt.verify(token, JWT_SECRET);
+  } catch (error) {
+    return res.status(400).send({ message: "User must be logged in." });
+  }
   const response = await prisma.user.findFirst({
     where: {
       id: req.user?.id,
@@ -78,9 +82,12 @@ const getAReview = async (req, res, next) => {
 };
 const writeAReview = async (req, res, next) => {
   const auth = req.headers.authorization;
-  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
-  req.user = jwt.verify(token, JWT_SECRET);
-
+  try {
+    const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+    req.user = jwt.verify(token, JWT_SECRET);
+  } catch (error) {
+    return res.status(400).send({ message: "User must be logged in." });
+  }
   const existingReview = await prisma.review.findFirst({
     where: {
       userId: req.user?.id,
@@ -115,8 +122,12 @@ const getMyReviews = async (req, res, next) => {
 };
 const updateAReview = async (req, res, next) => {
   const auth = req.headers.authorization;
-  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
-  req.user = jwt.verify(token, JWT_SECRET);
+  try {
+    const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+    req.user = jwt.verify(token, JWT_SECRET);
+  } catch (error) {
+    return res.status(400).send({ message: "User must be logged in." });
+  }
   if (req.user?.id !== req.params.userId) {
     res.send("Please log in.");
   } else {
@@ -135,8 +146,12 @@ const updateAReview = async (req, res, next) => {
 
 const writeAComment = async (req, res, next) => {
   const auth = req.headers.authorization;
-  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
-  req.user = jwt.verify(token, JWT_SECRET);
+  try {
+    const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+    req.user = jwt.verify(token, JWT_SECRET);
+  } catch (error) {
+    return res.status(400).send({ message: "User must be logged in." });
+  }
   const response = await prisma.comment.create({
     data: {
       reviewId: req.params.reviewId,
@@ -159,8 +174,12 @@ const getMyComments = async (req, res, next) => {
 };
 const UpdateAComment = async (req, res, next) => {
   const auth = req.headers.authorization;
-  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
-  req.user = jwt.verify(token, JWT_SECRET);
+  try {
+    const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+    req.user = jwt.verify(token, JWT_SECRET);
+  } catch (error) {
+    return res.status(400).send({ message: "User must be logged in." });
+  }
   if (req.user?.id !== req.params.userId) {
     res.send("Please log in.");
   } else {
@@ -178,8 +197,12 @@ const UpdateAComment = async (req, res, next) => {
 
 const deleteReview = async (req, res, next) => {
   const auth = req.headers.authorization;
-  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
-  req.user = jwt.verify(token, JWT_SECRET);
+  try {
+    const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+    req.user = jwt.verify(token, JWT_SECRET);
+  } catch (error) {
+    return res.status(400).send({ message: "User must be logged in." });
+  }
   if (req.user?.id !== req.params.userId) {
     res.send("Please log in.");
   } else {
@@ -198,8 +221,12 @@ const deleteReview = async (req, res, next) => {
 };
 const deleteComment = async (req, res, next) => {
   const auth = req.headers.authorization;
-  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
-  req.user = jwt.verify(token, JWT_SECRET);
+  try {
+    const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+    req.user = jwt.verify(token, JWT_SECRET);
+  } catch (error) {
+    return res.status(400).send({ message: "User must be logged in." });
+  }
   if (req.user?.id !== req.params.userId) {
     res.send("Please log in.");
   } else {
