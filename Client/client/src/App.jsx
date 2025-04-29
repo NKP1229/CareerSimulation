@@ -88,6 +88,8 @@ function App() {
       window.localStorage.setItem("token", json.token);
       setIsRegister(false);
       setIsSignedIn(true);
+      setUsername("");
+      setPassword("");
     } else {
       console.log(json);
     }
@@ -106,6 +108,8 @@ function App() {
       window.localStorage.setItem("token", json.token);
       setIsLogIn(false);
       setIsSignedIn(true);
+      setUsername("");
+      setPassword("");
     } else {
       console.log(json);
     }
@@ -175,7 +179,7 @@ function App() {
           {isAccount && (
             <>
               <h2>Account Details</h2>
-              <div>
+              <div className="Data">
                 <h5>id: {account.id}</h5>
                 <h5>username: {account.username}</h5>
                 <h5>password: {account.password}</h5>
@@ -183,11 +187,13 @@ function App() {
               <h2>Reviews</h2>
               <ul>
                 {reviews.map((review) => (
-                  <li key={review.id}>
-                    <button>
-                      <h5>item: {review.itemId}</h5>
-                      <h5>rating: {review.rating}</h5>
-                    </button>
+                  <li key={review.id} className="Data">
+                    <button className="inline">edit</button>
+                    <section className="inline">
+                      <h5 className="inline">item: {review.itemId}</h5>
+                      <h5 className="inline">rating: {review.rating}</h5>
+                    </section>
+                    <button>delete</button>
                   </li>
                 ))}
               </ul>
@@ -271,7 +277,14 @@ function App() {
             <h2>Selected Item:</h2>
             <section>
               <h3>{selectedItem.name}</h3>
-              <h3>rating: {avgRating}</h3>
+              {avgRating && <h3>Avg Rating: {avgRating}</h3>}
+            </section>
+            <section>
+              <ul>
+                {reviews.map((review) => (
+                  <li key={review.id}>rating: {review.rating}</li>
+                ))}
+              </ul>
             </section>
           </>
         )}

@@ -53,3 +53,13 @@ h5 {
     color: black;
   }
 }
+.inline {
+  display: inline-block;
+}
+li {
+  align-content: center;
+}
+.Data {
+  background-color: rgba(95, 158, 160, 0.173);
+  border-radius: 5px;
+}
