@@ -111,8 +111,12 @@ const writeAReview = async (req, res, next) => {
 };
 const getMyReviews = async (req, res, next) => {
   const auth = req.headers.authorization;
-  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
-  req.user = jwt.verify(token, JWT_SECRET);
+  try {
+    const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+    req.user = jwt.verify(token, JWT_SECRET);
+  } catch (error) {
+    return res.status(400).send({ message: "User must be logged in." });
+  }
   const response = await prisma.review.findMany({
     where: {
       userId: req.user?.id,
@@ -163,8 +167,12 @@ const writeAComment = async (req, res, next) => {
 };
 const getMyComments = async (req, res, next) => {
   const auth = req.headers.authorization;
-  const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
-  req.user = jwt.verify(token, JWT_SECRET);
+  try {
+    const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+    req.user = jwt.verify(token, JWT_SECRET);
+  } catch (error) {
+    return res.status(400).send({ message: "User must be logged in." });
+  }
   const response = await prisma.comment.findMany({
     where: {
       userId: req.user?.id,
