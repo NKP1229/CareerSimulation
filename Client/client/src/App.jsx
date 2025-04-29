@@ -6,6 +6,8 @@ function App() {
   const [account, setAccount] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [getItemReview, setGetItemReview] = useState(false);
+  const [avgRating, setAvgRating] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isRegister, setIsRegister] = useState(false);
   const [username, setUsername] = useState("");
@@ -34,11 +36,29 @@ function App() {
     fetchItems();
   }, [refresh]);
 
+  async function getItemReviews(itemId) {
+    try {
+      setLoading(true);
+      const response = await fetch(`api/items/${itemId}/reviews`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch item reviews");
+      }
+      const json = await response.json();
+      setReviews(json.response);
+      setAvgRating(json.avg);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  }
+
   function home() {
     setIsLogIn(false);
     setIsRegister(false);
     setIsAccount(false);
     setSelectedItem(null);
+    setGetItemReview(false);
   }
   function register() {
     setIsRegister(true);
@@ -49,6 +69,10 @@ function App() {
     setIsLogIn(true);
     setIsRegister(false);
     setSelectedItem(null);
+  }
+  function setSelect(item) {
+    setSelectedItem(item);
+    setGetItemReview(true);
   }
   const signup = async (event) => {
     event.preventDefault();
@@ -124,6 +148,12 @@ function App() {
 
   if (loading) {
     return <div>Loading...</div>;
+  }
+  if (selectedItem) {
+    if (getItemReview) {
+      getItemReviews(selectedItem.id);
+      setGetItemReview(false);
+    }
   }
   if (isSignedIn) {
     return (
@@ -240,9 +270,8 @@ function App() {
           <>
             <h2>Selected Item:</h2>
             <section>
-              <h3>{selectedItem.id}</h3>
               <h3>{selectedItem.name}</h3>
-              <h3></h3>
+              <h3>rating: {avgRating}</h3>
             </section>
           </>
         )}
@@ -254,7 +283,7 @@ function App() {
                 {Array.isArray(items) && items.length > 0 ? (
                   items.map((item) => (
                     <li key={item.id}>
-                      <button onClick={() => setSelectedItem(item)}>
+                      <button onClick={() => setSelect(item)}>
                         {item.name}
                       </button>
                     </li>
