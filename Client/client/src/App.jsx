@@ -3,11 +3,14 @@ import "./App.css";
 
 function App() {
   const [items, setItems] = useState([]);
+  const [account, setAccount] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isRegister, setIsRegister] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLogIn, setIsLogIn] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isAccount, setIsAccount] = useState(false);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -27,15 +30,16 @@ function App() {
     fetchItems();
   }, []);
 
-  async function home() {
+  function home() {
     setIsLogIn(false);
     setIsRegister(false);
+    setIsAccount(false);
   }
-  async function register() {
+  function register() {
     setIsRegister(true);
     setIsLogIn(false);
   }
-  async function logIn() {
+  function logIn() {
     setIsLogIn(true);
     setIsRegister(false);
   }
@@ -52,6 +56,7 @@ function App() {
     if (response.ok) {
       window.localStorage.setItem("token", json.token);
       setIsRegister(false);
+      setIsSignedIn(true);
     } else {
       console.log(json);
     }
@@ -60,7 +65,7 @@ function App() {
     event.preventDefault();
     const response = await fetch("/api/auth/login", {
       method: "POST",
-      body: JSON.stringify({ username, password }), // Properly stringify the data
+      body: JSON.stringify({ username, password }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -69,6 +74,29 @@ function App() {
     if (response.ok) {
       window.localStorage.setItem("token", json.token);
       setIsLogIn(false);
+      setIsSignedIn(true);
+    } else {
+      console.log(json);
+    }
+  };
+  const logOut = () => {
+    setIsSignedIn(false);
+    setIsAccount(false);
+    window.localStorage.removeItem("token");
+  };
+  const Account = async () => {
+    setIsAccount(true);
+    const token = window.localStorage.getItem("token");
+    const response = await fetch("/api/auth/me", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const json = await response.json();
+    if (response.ok) {
+      setAccount(json.response);
     } else {
       console.log(json);
     }
@@ -76,6 +104,36 @@ function App() {
 
   if (loading) {
     return <div>Loading...</div>;
+  }
+  if (isSignedIn) {
+    return (
+      <>
+        <nav>
+          <ul>
+            <li>
+              <button onClick={() => home()}>Home</button>
+            </li>
+            <li>
+              <button onClick={() => Account()}>Account</button>
+            </li>
+            <li>
+              <button onClick={() => logOut(false)}>Log Out</button>
+            </li>
+          </ul>
+        </nav>
+        <main>
+          {isAccount && (
+            <>
+              <h1>Account Details</h1>
+              <h3>{account.id}</h3>
+              <h3>{account.username}</h3>
+              <h3>{account.password}</h3>
+            </>
+          )}
+          {!isAccount && <h1>Home</h1>}
+        </main>
+      </>
+    );
   }
   return (
     <>
